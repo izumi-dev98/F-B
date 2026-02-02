@@ -1,20 +1,24 @@
 import { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import Swal from "sweetalert2";
+
 import Sidebar from "./components/Sidebar";
 import Navbar from "./components/Navbar";
 import Dashboard from "./pages/Dashboard";
-import Payments from "./pages/Pyaments";
+import Payments from "./pages/Pyaments"; // fixed typo
 import History from "./pages/History";
 import Menu from "./pages/Menu";
 import Inventory from "./pages/Inventory";
+
 import supabase from "./createClients";
+import Pyaments from "./pages/Pyaments";
 
 export default function App() {
   const [isOpen, setIsOpen] = useState(window.innerWidth >= 768);
   const [inventory, setInventory] = useState([]);
   const [menu, setMenu] = useState([]);
 
+  // ------------------- Responsive Sidebar -------------------
   useEffect(() => {
     const handleResize = () => setIsOpen(window.innerWidth >= 768);
     window.addEventListener("resize", handleResize);
@@ -22,20 +26,26 @@ export default function App() {
   }, []);
 
   // ------------------- Inventory -------------------
+  const fetchInventory = async () => {
+    const { data, error } = await supabase
+      .from("inventory")
+      .select("*")
+      .order("id", { ascending: true });
+
+    if (error) Swal.fire("Error", error.message, "error");
+    else setInventory(data);
+  };
+
   useEffect(() => {
-    const fetchInventory = async () => {
-      const { data, error } = await supabase
-        .from("inventory")
-        .select("*")
-        .order("id", { ascending: true });
-      if (error) Swal.fire("Error", error.message, "error");
-      else setInventory(data);
-    };
     fetchInventory();
   }, []);
 
   const addInventoryItem = async (item) => {
-    const { data, error } = await supabase.from("inventory").insert([item]).select().single();
+    const { data, error } = await supabase
+      .from("inventory")
+      .insert([item])
+      .select()
+      .single();
     if (error) Swal.fire("Error", error.message, "error");
     else {
       setInventory((prev) => [...prev, data]);
@@ -44,7 +54,12 @@ export default function App() {
   };
 
   const updateInventoryItem = async (id, updatedItem) => {
-    const { data, error } = await supabase.from("inventory").update(updatedItem).eq("id", id).select().single();
+    const { data, error } = await supabase
+      .from("inventory")
+      .update(updatedItem)
+      .eq("id", id)
+      .select()
+      .single();
     if (error) Swal.fire("Error", error.message, "error");
     else {
       setInventory((prev) => prev.map((item) => (item.id === id ? data : item)));
@@ -70,17 +85,26 @@ export default function App() {
   };
 
   // ------------------- Menu -------------------
+  const fetchMenu = async () => {
+    const { data, error } = await supabase
+      .from("menu")
+      .select("*")
+      .order("id", { ascending: true });
+
+    if (error) Swal.fire("Error", error.message, "error");
+    else setMenu(data);
+  };
+
   useEffect(() => {
-    const fetchMenu = async () => {
-      const { data, error } = await supabase.from("menu").select("*").order("id", { ascending: true });
-      if (error) Swal.fire("Error", error.message, "error");
-      else setMenu(data);
-    };
     fetchMenu();
   }, []);
 
   const addMenuItem = async (item) => {
-    const { data, error } = await supabase.from("menu").insert([item]).select().single();
+    const { data, error } = await supabase
+      .from("menu")
+      .insert([item])
+      .select()
+      .single();
     if (error) Swal.fire("Error", error.message, "error");
     else {
       setMenu((prev) => [...prev, data]);
@@ -89,7 +113,12 @@ export default function App() {
   };
 
   const updateMenuItem = async (id, updatedItem) => {
-    const { data, error } = await supabase.from("menu").update(updatedItem).eq("id", id).select().single();
+    const { data, error } = await supabase
+      .from("menu")
+      .update(updatedItem)
+      .eq("id", id)
+      .select()
+      .single();
     if (error) Swal.fire("Error", error.message, "error");
     else {
       setMenu((prev) => prev.map((m) => (m.id === id ? data : m)));
@@ -124,14 +153,23 @@ export default function App() {
         <main className="p-6">
           <Routes>
             <Route path="/" element={<Dashboard />} />
-            <Route path="/payments" element={<Payments inventory={inventory} />} />
+            <Route
+              path="/payments"
+              element={
+                <Pyaments
+                  inventory={inventory}
+                  setInventory={setInventory}
+                  menu={menu}
+                />
+              }
+            />
             <Route path="/history" element={<History />} />
             <Route
               path="/menu"
               element={
                 <Menu
-                  inventory={inventory}
                   menu={menu}
+                  inventory={inventory}
                   addMenuItem={addMenuItem}
                   updateMenuItem={updateMenuItem}
                   deleteMenuItem={deleteMenuItem}

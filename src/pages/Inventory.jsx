@@ -11,7 +11,7 @@ export default function Inventory({
   const [isEditing, setIsEditing] = useState(false)
   const [editId, setEditId] = useState(null)
   const [currentPage, setCurrentPage] = useState(1)
-  const itemsPerPage = 6
+  const itemsPerPage = 5
 
   const [formData, setFormData] = useState({
     item_name: "",
@@ -30,9 +30,8 @@ export default function Inventory({
     currentPage * itemsPerPage
   )
 
-  const handleChange = (e) => {
+  const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value })
-  }
 
   const openAddModal = () => {
     setFormData({ item_name: "", qty: "", type: "" })
@@ -41,11 +40,7 @@ export default function Inventory({
   }
 
   const openEditModal = (item) => {
-    setFormData({
-      item_name: item.item_name,
-      qty: item.qty,
-      type: item.type
-    })
+    setFormData(item)
     setEditId(item.id)
     setIsEditing(true)
     setShowModal(true)
@@ -53,137 +48,136 @@ export default function Inventory({
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    if (isEditing) {
-      await updateInventoryItem(editId, {
-        item_name: formData.item_name,
-        qty: Number(formData.qty),
-        type: formData.type
-      })
-    } else {
-      await addInventoryItem({
-        item_name: formData.item_name,
-        qty: Number(formData.qty),
-        type: formData.type
-      })
+
+    const payload = {
+      item_name: formData.item_name,
+      qty: Number(formData.qty),
+      type: formData.type
     }
+
+    isEditing
+      ? await updateInventoryItem(editId, payload)
+      : await addInventoryItem(payload)
+
     setShowModal(false)
     setIsEditing(false)
     setEditId(null)
   }
 
   return (
-    <>
+    <div className="bg-white shadow-lg rounded-xl p-6">
       {/* Header */}
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="font-bold text-2xl">Inventory</h2>
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
+        <h2 className="text-3xl font-semibold text-gray-800">📦 Inventory</h2>
 
-        <div className="flex gap-4">
+        <div className="flex gap-3">
           <input
             type="search"
-            placeholder="Search Inventory..."
-            className="p-2 border rounded w-60"
+            placeholder="Search items..."
+            className="px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-400 outline-none"
             value={searchTerm}
-            onChange={e => {
+            onChange={(e) => {
               setSearchTerm(e.target.value)
-              setCurrentPage(1) // reset page on search
+              setCurrentPage(1)
             }}
           />
 
-          <button onClick={openAddModal} className="p-2 bg-green-500 text-white rounded">
-            ADD
+          <button
+            onClick={openAddModal}
+            className="px-5 py-2 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-lg hover:opacity-90 transition"
+          >
+            + Add Item
           </button>
         </div>
       </div>
 
       {/* Table */}
-      <table className="border w-full text-center">
-        <thead>
-          <tr>
-            <th className="border p-2">No</th>
-            <th className="border p-2">Item Name</th>
-            <th className="border p-2">QTY</th>
-            <th className="border p-2">Type</th>
-            <th className="border p-2">Action</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          {paginatedInventory.length === 0 ? (
-            <tr>
-              <td colSpan="5" className="p-4">No inventory found</td>
+      <div className="overflow-x-auto">
+        <table className="w-full border-collapse">
+          <thead>
+            <tr className="bg-gray-100 text-gray-700">
+              <th className="p-3 text-left">#</th>
+              <th className="p-3 text-left">Item</th>
+              <th className="p-3 text-center">Qty</th>
+              <th className="p-3 text-left">Type</th>
+              <th className="p-3 text-center">Actions</th>
             </tr>
-          ) : (
-            paginatedInventory.map((item, index) => (
-              <tr key={item.id}>
-                <td className="border p-2">{(currentPage - 1) * itemsPerPage + index + 1}</td>
-                <td className="border p-2">{item.item_name}</td>
-                <td className="border p-2">{item.qty}</td>
-                <td className="border p-2">{item.type}</td>
-                <td className="border p-2 flex justify-center gap-3">
-                  <button
-                    onClick={() => openEditModal(item)}
-                    className="px-3 py-1 bg-blue-500 text-white rounded"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => deleteInventoryItem(item.id)}
-                    className="px-3 py-1 bg-red-500 text-white rounded"
-                  >
-                    Delete
-                  </button>
+          </thead>
+
+          <tbody>
+            {paginatedInventory.length === 0 ? (
+              <tr>
+                <td colSpan="5" className="p-6 text-center text-gray-400">
+                  No inventory found
                 </td>
               </tr>
-            ))
-          )}
-        </tbody>
-      </table>
+            ) : (
+              paginatedInventory.map((item, index) => (
+                <tr
+                  key={item.id}
+                  className="border-b hover:bg-gray-50 transition"
+                >
+                  <td className="p-3">
+                    {(currentPage - 1) * itemsPerPage + index + 1}
+                  </td>
+                  <td className="p-3 font-medium">{item.item_name}</td>
+                  <td className="p-3 text-center">{item.qty}</td>
+                  <td className="p-3">{item.type}</td>
+                  <td className="p-3 flex justify-center gap-2">
+                    <button
+                      onClick={() => openEditModal(item)}
+                      className="px-3 py-1 text-sm bg-blue-500 text-white rounded-md hover:bg-blue-600"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => deleteInventoryItem(item.id)}
+                      className="px-3 py-1 text-sm bg-red-500 text-white rounded-md hover:bg-red-600"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
 
       {/* Pagination */}
       {totalPages > 1 && (
-        <div className="flex justify-center items-center gap-2 mt-4">
-          <button
-            onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-            className="px-3 py-1 bg-gray-300 rounded"
-            disabled={currentPage === 1}
-          >
-            Prev
-          </button>
-
+        <div className="flex justify-center gap-2 mt-6">
           {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
             <button
               key={page}
               onClick={() => setCurrentPage(page)}
-              className={`px-3 py-1 rounded ${currentPage === page ? "bg-blue-500 text-white" : "bg-gray-200"}`}
+              className={`w-9 h-9 rounded-full ${
+                currentPage === page
+                  ? "bg-blue-500 text-white"
+                  : "bg-gray-200 hover:bg-gray-300"
+              }`}
             >
               {page}
             </button>
           ))}
-
-          <button
-            onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-            className="px-3 py-1 bg-gray-300 rounded"
-            disabled={currentPage === totalPages}
-          >
-            Next
-          </button>
         </div>
       )}
 
       {/* Modal */}
       {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white p-6 rounded w-96">
-            <h3 className="text-xl font-bold mb-4">{isEditing ? "Edit Inventory" : "Add Inventory"}</h3>
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl p-6 w-96 shadow-xl">
+            <h3 className="text-xl font-semibold mb-4">
+              {isEditing ? "Edit Item" : "Add Item"}
+            </h3>
 
             <form onSubmit={handleSubmit} className="space-y-4">
               <input
-                type="text"
                 name="item_name"
-                placeholder="Item Name"
+                placeholder="Item name"
                 value={formData.item_name}
-                onChange={(e) => handleChange(e)}
-                className="w-full p-2 border rounded"
+                onChange={handleChange}
+                className="w-full px-4 py-2 border rounded-lg"
                 required
               />
               <input
@@ -191,31 +185,30 @@ export default function Inventory({
                 name="qty"
                 placeholder="Quantity"
                 value={formData.qty}
-                onChange={(e) => handleChange(e)}
-                className="w-full p-2 border rounded"
+                onChange={handleChange}
+                className="w-full px-4 py-2 border rounded-lg"
                 required
               />
               <input
-                type="text"
                 name="type"
                 placeholder="Type"
                 value={formData.type}
-                onChange={(e) => handleChange(e)}
-                className="w-full p-2 border rounded"
+                onChange={handleChange}
+                className="w-full px-4 py-2 border rounded-lg"
                 required
               />
 
-              <div className="flex justify-end gap-3">
+              <div className="flex justify-end gap-3 pt-2">
                 <button
                   type="button"
                   onClick={() => setShowModal(false)}
-                  className="px-4 py-2 bg-gray-400 text-white rounded"
+                  className="px-4 py-2 bg-gray-300 rounded-lg"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-green-500 text-white rounded"
+                  className="px-4 py-2 bg-green-500 text-white rounded-lg"
                 >
                   {isEditing ? "Update" : "Save"}
                 </button>
@@ -224,6 +217,6 @@ export default function Inventory({
           </div>
         </div>
       )}
-    </>
+    </div>
   )
 }

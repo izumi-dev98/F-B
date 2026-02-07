@@ -24,7 +24,7 @@ export default function Sidebar({ isOpen}) {
                     <NavLink to='/history' className="block hover:text-blue-400 border border-gray-500 px-4 py-2 rounded-lg">History</NavLink>
                     <NavLink to='/menu' className="block hover:text-blue-400 border border-gray-500 px-4 py-2 rounded-lg">Menu</NavLink>
                     <NavLink to='/inventory' className="block hover:text-blue-400 border border-gray-500 px-4 py-2 rounded-lg">Inventory</NavLink>
-                    <a className="block absolute bottom-10 hover:text-red-400 border border-gray-500 px-4 py-2 rounded-lg w-55" href="#">Log Out</a>
+                    
                 </nav>
             </aside>
         </>

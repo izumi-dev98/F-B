@@ -148,7 +148,7 @@ export default function App() {
   return (
     <div className="flex">
       <Sidebar isOpen={isOpen} toggleSidebar={toggleSidebar} />
-      <div className={`flex-1 min-h-screen bg-gray-100 ${isOpen ? "ml-64" : "ml-0"}`}>
+      <div className={`flex-1 min-h-screen bg-gray-100 ${isOpen ? "ml-60" : "ml-0"}`}>
         <Navbar toggleSidebar={toggleSidebar} />
         <main className="p-6">
           <Routes>

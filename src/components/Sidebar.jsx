@@ -13,7 +13,7 @@ export default function Sidebar({ isOpen}) {
           ${isOpen ? "translate-x-0" : "-translate-x-full"}
         `}
             >
-                <div className="flex items-center gap-3 py-4 px-6 border-b border-gray-300">
+                <div className="flex items-center gap-3 py- px-6 border-b border-gray-300">
                     
                     <span className="font-bold text-lg">ATY F&B </span>
                 </div>

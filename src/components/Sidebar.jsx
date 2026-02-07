@@ -15,7 +15,7 @@ export default function Sidebar({ isOpen}) {
             >
                 <div className="flex items-center gap-3 py- px-6 border-b border-gray-300">
                     
-                    <span className="font-bold text-lg">ATY F&B </span>
+                    <span className="font-bold text-lg">POS System </span>
                 </div>
 
                 <nav className="p-4 space-y-3">

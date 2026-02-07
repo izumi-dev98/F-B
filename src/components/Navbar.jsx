@@ -8,7 +8,7 @@ export default function Navbar({ toggleSidebar }) {
       >
         ☰
       </button>
-      <h1 className="ml-4 font-semibold">ATY F&B POS System</h1>
+      <h1 className="ml-4 font-semibold"> POS System</h1>
     </header>
   )
 }

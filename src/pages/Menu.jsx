@@ -239,6 +239,7 @@ export default function Menu({ inventory }) {
                   <input
                     name="qty"
                     type="number"
+                    step="any"
                     value={ing.qty}
                     onChange={(e) => handleIngredientChange(i, e)}
                     className="w-20 px-2 py-1 border rounded-2xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"

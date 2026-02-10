@@ -64,10 +64,17 @@ export default function Menu({ inventory }) {
 
   const handleIngredientChange = (i, e) => {
     const newIngredients = [...formData.ingredients];
+
     newIngredients[i][e.target.name] =
-      e.target.name === "qty" ? Number(e.target.value) : e.target.value;
+      e.target.name === "qty"
+        ? e.target.value === ""
+          ? ""
+          : parseFloat(e.target.value)
+        : e.target.value;
+
     setFormData({ ...formData, ingredients: newIngredients });
   };
+
 
   const addIngredientRow = () => setFormData({
     ...formData,
@@ -239,13 +246,14 @@ export default function Menu({ inventory }) {
                   <input
                     name="qty"
                     type="number"
-                    step="any"
+                    step="0.1"
+                    min="0"
                     value={ing.qty}
                     onChange={(e) => handleIngredientChange(i, e)}
                     className="w-20 px-2 py-1 border rounded-2xl shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
-                    min={1}
                     required
                   />
+
                   {formData.ingredients.length > 1 && (
                     <button type="button" onClick={() => removeIngredientRow(i)} className="text-red-500 font-bold">✕</button>
                   )}

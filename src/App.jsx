@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Routes, Route } from "react-router-dom";
 import Swal from "sweetalert2";
 
+
 import Sidebar from "./components/Sidebar";
 import Navbar from "./components/Navbar";
 import Dashboard from "./pages/Dashboard";
@@ -14,6 +15,17 @@ import supabase from "./createClients";
 import Pyaments from "./pages/Pyaments";
 import InventoryReport from "./pages/InventoryReport";
 import TotalSalesReport from "./pages/TotalSalesReport";
+import Login from "./pages/ Login";
+import PrivateRoute from "./pages/PrivateRoute";
+import UserCreate from "./pages/UserCreate";
+
+const accessRights = {
+  superadmin: ["dashboard", "payments", "history", "menu", "inventory", "report"],
+  admin: ["dashboard", "history", "inventory", "report"],
+  chief: ["dashboard", "payments", "history", "report", "menu"],
+  user: ["dashboard", "payments", "history", "report"],
+};
+
 
 export default function App() {
   const [isOpen, setIsOpen] = useState(window.innerWidth >= 768);
@@ -153,45 +165,89 @@ export default function App() {
       <div className={`flex-1 min-h-screen bg-gray-100 ${isOpen ? "ml-60" : "ml-0"}`}>
         <Navbar toggleSidebar={toggleSidebar} />
         <main className="p-6">
+
           <Routes>
-            <Route path="/" element={<Dashboard />} />
+            <Route path="/login" element={<Login />} />
+
+            <Route
+              path="/user-create"
+              element={
+                <PrivateRoute allowedRoles={["superadmin"]}>
+                  <UserCreate />
+                </PrivateRoute>
+              } />
+
+            <Route
+              path="/"
+              element={
+                <PrivateRoute allowedRoles={["superadmin", "admin", "chief", "user"]}>
+                  <Dashboard />
+                </PrivateRoute>
+              }
+            />
             <Route
               path="/payments"
               element={
-                <Pyaments
-                  inventory={inventory}
-                  setInventory={setInventory}
-                  menu={menu}
-                />
+                <PrivateRoute allowedRoles={["superadmin", "chief", "user"]}>
+                  <Pyaments
+                    inventory={inventory}
+                    setInventory={setInventory}
+                    menu={menu}
+                  />
+                </PrivateRoute>
               }
             />
-            <Route path="/history" element={<History />} />
+            <Route
+              path="/history"
+              element={
+                <PrivateRoute allowedRoles={["superadmin", "admin", "chief", "user"]}>
+                  <History />
+                </PrivateRoute>
+              }
+            />
             <Route
               path="/menu"
               element={
-                <Menu
-                  menu={menu}
-                  inventory={inventory}
-                  addMenuItem={addMenuItem}
-                  updateMenuItem={updateMenuItem}
-                  deleteMenuItem={deleteMenuItem}
-                />
+                <PrivateRoute allowedRoles={["superadmin", "chief"]}>
+                  <Menu
+                    menu={menu}
+                    inventory={inventory}
+                    addMenuItem={addMenuItem}
+                    updateMenuItem={updateMenuItem}
+                    deleteMenuItem={deleteMenuItem}
+                  />
+                </PrivateRoute>
               }
             />
             <Route
               path="/inventory"
               element={
-                <Inventory
-                  inventory={inventory}
-                  addInventoryItem={addInventoryItem}
-                  updateInventoryItem={updateInventoryItem}
-                  deleteInventoryItem={deleteInventoryItem}
-                />
+                <PrivateRoute allowedRoles={["superadmin", "admin"]}>
+                  <Inventory
+                    inventory={inventory}
+                    addInventoryItem={addInventoryItem}
+                    updateInventoryItem={updateInventoryItem}
+                    deleteInventoryItem={deleteInventoryItem}
+                  />
+                </PrivateRoute>
               }
             />
-            <Route path="/reports/inventory" element={<InventoryReport/>} />
-             <Route path="/reports/total-sales" element={<TotalSalesReport/>} />
-                  
+            <Route
+              path="/reports/inventory"
+              element={
+                <PrivateRoute allowedRoles={["superadmin", "admin", "chief", "user"]}>
+                  <InventoryReport />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="/reports/total-sales"
+              element={
+                <PrivateRoute allowedRoles={["superadmin", "admin", "chief", "user"]}>
+                  <TotalSalesReport />
+                </PrivateRoute>
+              }
+            />
           </Routes>
         </main>
       </div>

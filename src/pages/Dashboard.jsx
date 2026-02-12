@@ -130,49 +130,60 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="min-h-screen p-4 md:p-6 bg-gray-100">
-      <h1 className="text-3xl font-bold mb-6 text-center">Dashboard</h1>
+    <div className="flex flex-col h-full mt-3">
 
-      <div className="max-w-6xl mx-auto bg-white rounded-2xl shadow-lg p-6 overflow-x-auto">
+      <h1 className="text-2xl md:text-3xl font-bold mb-4 text-center">
+        Dashboard
+      </h1>
+
+      <div className="bg-white rounded-2xl shadow-lg p-4 md:p-6 flex flex-col flex-1 overflow-hidden">
+
         {/* Month selector */}
-        <div className="flex justify-end mb-4">
+        <div className="flex justify-end mb-3">
           <select
             value={selectedMonth}
             onChange={(e) => setSelectedMonth(e.target.value)}
-            className="px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="px-4 py-2 border rounded-xl focus:ring-2 focus:ring-blue-500"
           >
             {getLast12Months().map((m) => {
               const [year, month] = m.split("-");
               const date = new Date(year, month - 1, 1);
-              const label = date.toLocaleString("default", { month: "long", year: "numeric" });
               return (
                 <option key={m} value={m}>
-                  {label}
+                  {date.toLocaleString("default", { month: "long", year: "numeric" })}
                 </option>
               );
             })}
           </select>
         </div>
 
-        <h2 className="text-xl font-semibold mb-4">Monthly Sales</h2>
+        <h2 className="text-lg md:text-xl font-semibold mb-3">Monthly Sales</h2>
 
-        <div className="w-full h-[400px] md:h-[500px]">
-          {monthlyData.length === 0 ? (
-            <p className="text-gray-500">No sales data for this month.</p>
-          ) : (
-            <Bar data={chartData} options={chartOptions} />
+        {/* Scrollable content */}
+        <div className="flex-1 flex flex-col min-h-0">
+          <div className="flex-1 min-h-0">
+            {monthlyData.length === 0 ? (
+              <p className="text-gray-500 text-center mt-10">
+                No sales data for this month.
+              </p>
+            ) : (
+              <Bar data={chartData} options={chartOptions} className="h-full" />
+            )}
+          </div>
+
+          {mostSelling && (
+            <div className="mt-4 p-4 bg-blue-50 border-l-4 border-blue-600 rounded-lg">
+              <h3 className="font-semibold">Most Selling Menu</h3>
+              <p>
+                {mostSelling[0]} — {mmkFormatter.format(mostSelling[1])}
+              </p>
+            </div>
           )}
         </div>
 
-        {mostSelling && (
-          <div className="mt-6 p-4 bg-blue-50 border-l-4 border-blue-600 rounded-lg">
-            <h3 className="font-semibold text-lg">Most Selling Menu</h3>
-            <p className="text-gray-700">
-              {mostSelling[0]} — {mmkFormatter.format(mostSelling[1])} sold
-            </p>
-          </div>
-        )}
       </div>
     </div>
   );
+
+
 }

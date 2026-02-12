@@ -1,16 +1,19 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function Logout() {
+export default function Logout({ setUser }) { // receive setUser from App.js
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Clear logged-in user
+    // Clear localStorage
     localStorage.removeItem("user");
 
-    // Redirect to login page
-    navigate("/login", { replace: true });
-  }, [navigate]);
+    // Clear App state
+    if (setUser) setUser(null);
 
-  return null; // No UI needed, instantly redirects
+    // Redirect to login page
+    navigate("/", { replace: true });
+  }, [navigate, setUser]);
+
+  return null; // No UI needed
 }

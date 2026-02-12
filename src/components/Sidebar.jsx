@@ -2,7 +2,7 @@ import { useState } from "react";
 import { NavLink } from "react-router-dom";
 
 const accessRights = {
-  superadmin: ["dashboard", "payments", "history", "menu", "inventory", "report"],
+  superadmin: ["dashboard", "payments", "history", "menu", "inventory", "report", "user-create"],
   admin: ["dashboard", "history", "inventory", "report"],
   chief: ["dashboard", "payments", "history", "report", "menu"],
   user: ["dashboard", "payments", "history", "report"],
@@ -24,17 +24,14 @@ export default function Sidebar({ isOpen }) {
       </div>
 
       <nav className="p-4 space-y-3">
-        {/* Dashboard */}
         {roleAccess.includes("dashboard") && (
           <NavLink
-            to="/"
+            to="/dashboard"
             className="block hover:text-blue-400 border border-gray-500 px-4 py-2 rounded-lg"
           >
             Dashboard
           </NavLink>
         )}
-
-        {/* Payments */}
         {roleAccess.includes("payments") && (
           <NavLink
             to="/payments"
@@ -43,8 +40,6 @@ export default function Sidebar({ isOpen }) {
             Payments
           </NavLink>
         )}
-
-        {/* History */}
         {roleAccess.includes("history") && (
           <NavLink
             to="/history"
@@ -53,8 +48,6 @@ export default function Sidebar({ isOpen }) {
             History
           </NavLink>
         )}
-
-        {/* Menu */}
         {roleAccess.includes("menu") && (
           <NavLink
             to="/menu"
@@ -63,8 +56,6 @@ export default function Sidebar({ isOpen }) {
             Menu
           </NavLink>
         )}
-
-        {/* Inventory */}
         {roleAccess.includes("inventory") && (
           <NavLink
             to="/inventory"
@@ -73,8 +64,6 @@ export default function Sidebar({ isOpen }) {
             Inventory
           </NavLink>
         )}
-
-        {/* Reports Dropdown */}
         {roleAccess.includes("report") && (
           <div>
             <button
@@ -83,7 +72,6 @@ export default function Sidebar({ isOpen }) {
             >
               Reports
             </button>
-
             {reportOpen && (
               <div className="mt-2 ml-4 space-y-2">
                 <NavLink
@@ -92,7 +80,6 @@ export default function Sidebar({ isOpen }) {
                 >
                   Inventory Report
                 </NavLink>
-
                 <NavLink
                   to="/reports/total-sales"
                   className="block hover:text-blue-400 border border-gray-300 px-4 py-2 rounded-lg text-sm"
@@ -103,9 +90,7 @@ export default function Sidebar({ isOpen }) {
             )}
           </div>
         )}
-
-        {/* Superadmin-only: Create User */}
-        {user?.role === "superadmin" && (
+        {roleAccess.includes("user-create") && (
           <NavLink
             to="/user-create"
             className="block hover:text-blue-400 border border-gray-500 px-4 py-2 rounded-lg"
@@ -113,16 +98,12 @@ export default function Sidebar({ isOpen }) {
             Create User
           </NavLink>
         )}
-
-        {/* Logout (all users) */}
-        {user && (
-          <NavLink
-            to="/logout"
-            className="block hover:text-red-500 border border-gray-500 px-4 py-2 rounded-lg"
-          >
-            Logout
-          </NavLink>
-        )}
+        <NavLink
+          to="/logout"
+          className="block hover:text-red-500 border border-gray-500 px-4 py-2 rounded-lg"
+        >
+          Logout
+        </NavLink>
       </nav>
     </aside>
   );

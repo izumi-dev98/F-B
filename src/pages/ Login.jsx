@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-import supabase from "../createClients"; // make sure this points to your Supabase client
+import supabase from "../createClients";
 
-export default function Login() {
+export default function Login({ setUser }) { // <-- receive setUser from App.js
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -11,71 +11,56 @@ export default function Login() {
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    // Trim and normalize username/password
-    const trimmedUsername = username.trim().toLowerCase();
-    const trimmedPassword = password.trim();
-
-    if (!trimmedUsername || !trimmedPassword) {
+    if (!username.trim() || !password) {
       return Swal.fire("Error", "Please enter username and password", "error");
     }
 
     try {
-      // Supabase query with case-insensitive match
       const { data, error } = await supabase
         .from("user")
         .select("*")
-        .ilike("username", trimmedUsername) // case-insensitive
+        .eq("username", username.trim())
         .single();
 
-      if (error || !data) {
-        return Swal.fire("Error", "User not found", "error");
-      }
+      if (error || !data) return Swal.fire("Error", "User not found", "error");
+      if (data.password !== password) return Swal.fire("Error", "Wrong password", "error");
 
-      // Plain password check (for production, use hashing!)
-      if (data.password !== trimmedPassword) {
-        return Swal.fire("Error", "Incorrect password", "error");
-      }
-
-      // Save user in localStorage
+      // Save user to localStorage
       localStorage.setItem("user", JSON.stringify(data));
 
-      Swal.fire("Success", `Welcome ${data.full_name}!`, "success");
+      // Update App.js state
+      if (setUser) setUser(data);
 
-      // Redirect to dashboard
-      navigate("/");
+      Swal.fire("Success", "Logged in!", "success").then(() => {
+        navigate("/dashboard"); // redirect to dashboard
+      });
     } catch (err) {
       console.error(err);
-      Swal.fire("Error", "Something went wrong. Try again.", "error");
+      Swal.fire("Error", "Something went wrong", "error");
     }
   };
 
   return (
     <div className="flex items-center justify-center h-screen bg-gray-100">
-      <form
-        onSubmit={handleLogin}
-        className="bg-white p-6 rounded shadow-md w-96"
-      >
-        <h2 className="text-xl font-bold mb-4 text-center">POS System Login</h2>
-
+      <form onSubmit={handleLogin} className="bg-white p-6 rounded shadow-md w-96">
+        <h2 className="text-xl font-bold mb-4">Login</h2>
         <input
           type="text"
           placeholder="Username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          className="w-full mb-4 px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+          className="w-full mb-4 px-4 py-2 border rounded"
         />
-
         <input
           type="password"
           placeholder="Password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="w-full mb-4 px-4 py-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
+          className="w-full mb-4 px-4 py-2 border rounded"
         />
-
         <button
           type="submit"
-          className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition-colors"
+          className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600"
         >
           Login
         </button>

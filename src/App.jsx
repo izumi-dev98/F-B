@@ -18,6 +18,7 @@ import TotalSalesReport from "./pages/TotalSalesReport";
 import Login from "./pages/ Login";
 import PrivateRoute from "./pages/PrivateRoute";
 import UserCreate from "./pages/UserCreate";
+import Logout from "./pages/Logout";
 
 const accessRights = {
   superadmin: ["dashboard", "payments", "history", "menu", "inventory", "report"],
@@ -168,87 +169,17 @@ export default function App() {
 
           <Routes>
             <Route path="/login" element={<Login />} />
-
-            <Route
-              path="/user-create"
-              element={
-                <PrivateRoute allowedRoles={["superadmin"]}>
-                  <UserCreate />
-                </PrivateRoute>
-              } />
-
-            <Route
-              path="/"
-              element={
-                <PrivateRoute allowedRoles={["superadmin", "admin", "chief", "user"]}>
-                  <Dashboard />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/payments"
-              element={
-                <PrivateRoute allowedRoles={["superadmin", "chief", "user"]}>
-                  <Pyaments
-                    inventory={inventory}
-                    setInventory={setInventory}
-                    menu={menu}
-                  />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/history"
-              element={
-                <PrivateRoute allowedRoles={["superadmin", "admin", "chief", "user"]}>
-                  <History />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/menu"
-              element={
-                <PrivateRoute allowedRoles={["superadmin", "chief"]}>
-                  <Menu
-                    menu={menu}
-                    inventory={inventory}
-                    addMenuItem={addMenuItem}
-                    updateMenuItem={updateMenuItem}
-                    deleteMenuItem={deleteMenuItem}
-                  />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/inventory"
-              element={
-                <PrivateRoute allowedRoles={["superadmin", "admin"]}>
-                  <Inventory
-                    inventory={inventory}
-                    addInventoryItem={addInventoryItem}
-                    updateInventoryItem={updateInventoryItem}
-                    deleteInventoryItem={deleteInventoryItem}
-                  />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/reports/inventory"
-              element={
-                <PrivateRoute allowedRoles={["superadmin", "admin", "chief", "user"]}>
-                  <InventoryReport />
-                </PrivateRoute>
-              }
-            />
-            <Route
-              path="/reports/total-sales"
-              element={
-                <PrivateRoute allowedRoles={["superadmin", "admin", "chief", "user"]}>
-                  <TotalSalesReport />
-                </PrivateRoute>
-              }
-            />
+            <Route path="/logout" element={<Logout />} />
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/payments" element={<Payments inventory={inventory} menu={menu} />} />
+            <Route path="/history" element={<History />} />
+            <Route path="/menu" element={<Menu menu={menu} inventory={inventory} addMenuItem={addMenuItem} updateMenuItem={updateMenuItem} deleteMenuItem={deleteMenuItem} />} />
+            <Route path="/inventory" element={<Inventory inventory={inventory} addInventoryItem={addInventoryItem} updateInventoryItem={updateInventoryItem} deleteInventoryItem={deleteInventoryItem} />} />
+            <Route path="/reports/inventory" element={<InventoryReport />} />
+            <Route path="/reports/total-sales" element={<TotalSalesReport />} />
+            <Route path="/user-create" element={<UserCreate />} />
           </Routes>
+
         </main>
       </div>
     </div>

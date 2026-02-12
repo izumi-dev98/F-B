@@ -5,9 +5,12 @@ export default function Logout() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    localStorage.removeItem("user"); // Clear logged-in user
-    navigate("/login"); // Redirect to login
+    // Clear logged-in user
+    localStorage.removeItem("user");
+
+    // Redirect to login page
+    navigate("/login", { replace: true });
   }, [navigate]);
 
-  return null; // No UI needed
+  return null; // No UI needed, instantly redirects
 }

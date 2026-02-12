@@ -17,7 +17,7 @@ export default function UserCreate() {
 
     try {
       const { data, error } = await supabase
-        .from("users")
+        .from("user")
         .insert([{ full_name: fullName, username, password, role }])
         .select()
         .single();

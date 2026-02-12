@@ -12,6 +12,8 @@ import Inventory from "./pages/Inventory";
 
 import supabase from "./createClients";
 import Pyaments from "./pages/Pyaments";
+import InventoryReport from "./pages/InventoryReport";
+import TotalSalesReport from "./pages/TotalSalesReport";
 
 export default function App() {
   const [isOpen, setIsOpen] = useState(window.innerWidth >= 768);
@@ -187,6 +189,9 @@ export default function App() {
                 />
               }
             />
+            <Route path="/reports/inventory" element={<InventoryReport/>} />
+             <Route path="/reports/total-sales" element={<TotalSalesReport/>} />
+                  
           </Routes>
         </main>
       </div>

@@ -130,7 +130,7 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="flex flex-col h-full mt-3">
+    <div className="flex flex-col h-full mt-10">
 
       <h1 className="text-2xl md:text-3xl font-bold mb-4 text-center">
         Dashboard

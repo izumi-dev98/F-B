@@ -204,7 +204,7 @@ export default function TotalSalesReport() {
         <table className="min-w-full text-left">
           <thead className="bg-gradient-to-r from-blue-500 to-blue-600 text-white">
             <tr>
-              <th className="px-6 py-3">Order ID</th>
+              <th className="px-6 py-3">Slip ID</th>
               <th className="px-6 py-3">Menu</th>
               <th className="px-6 py-3">Qty</th>
               <th className="px-6 py-3">Price</th>

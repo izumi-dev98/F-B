@@ -243,7 +243,7 @@ export default function UserManagement() {
               >
                 <option value="superadmin">Superadmin</option>
                 <option value="admin">Admin</option>
-                <option value="chief">Chief</option>
+                <option value="chef">Chef</option>
                 <option value="user">User</option>
               </select>
               <div className="flex justify-end space-x-2 mt-3">

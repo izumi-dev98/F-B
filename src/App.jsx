@@ -24,7 +24,7 @@ import Logout from "./pages/Logout";
 const accessRights = {
   superadmin: ["dashboard", "payments", "history", "menu", "inventory", "report"],
   admin: ["dashboard", "history", "inventory", "report"],
-  chief: ["dashboard", "payments", "history", "report", "menu"],
+  chef: ["dashboard", "payments", "history", "report", "menu"],
   user: ["dashboard", "payments", "history", "report"],
 };
 
@@ -145,7 +145,7 @@ export default function App() {
             <Route path="/dashboard" element={<PrivateRoute user={user}><Dashboard /></PrivateRoute>} />
             <Route path="/payments" element={<PrivateRoute user={user}><Payments inventory={inventory} setInventory={setInventory} menu={menu} /></PrivateRoute>} />
             <Route path="/history" element={<PrivateRoute user={user}><History /></PrivateRoute>} />
-            <Route path="/menu" element={<PrivateRoute user={user} allowedRoles={['superadmin', 'chief']}><Menu menu={menu} inventory={inventory} addMenuItem={addMenuItem} updateMenuItem={updateMenuItem} deleteMenuItem={deleteMenuItem} /></PrivateRoute>} />
+            <Route path="/menu" element={<PrivateRoute user={user} allowedRoles={['superadmin', 'chef']}><Menu menu={menu} inventory={inventory} addMenuItem={addMenuItem} updateMenuItem={updateMenuItem} deleteMenuItem={deleteMenuItem} /></PrivateRoute>} />
             <Route path="/inventory" element={<PrivateRoute user={user} allowedRoles={['superadmin', 'admin']}><Inventory inventory={inventory} addInventoryItem={addInventoryItem} updateInventoryItem={updateInventoryItem} deleteInventoryItem={deleteInventoryItem} /></PrivateRoute>} />
             <Route path="/reports/inventory" element={<PrivateRoute user={user}><InventoryReport /></PrivateRoute>} />
             <Route path="/reports/total-sales" element={<PrivateRoute user={user}><TotalSalesReport /></PrivateRoute>} />

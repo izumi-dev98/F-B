@@ -58,7 +58,7 @@ export default function Login({ setUser }) { // <-- receive setUser from App.js
       {/* Header */}
       <div className="text-center mb-6">
         <h2 className="text-xl sm:text-2xl font-bold text-gray-800">
-          POS Login
+          Myat Taw Win (Aye Thar Yar) Hospital
         </h2>
         <p className="text-xs sm:text-sm text-gray-500">
           Sign in to continue
@@ -141,7 +141,7 @@ export default function Login({ setUser }) { // <-- receive setUser from App.js
 
       {/* Footer */}
       <p className="text-center text-[10px] sm:text-xs text-gray-400 mt-6">
-        © 2026 POS System
+        © 2026 Myat Taw Win Hospital
       </p>
     </div>
 

@@ -5,7 +5,7 @@ import { NavLink } from "react-router-dom";
 const accessRights = {
   superadmin: ["dashboard", "payments", "history", "menu", "inventory", "report", "user-create"],
   admin: ["dashboard", "history", "inventory", "report"],
-  chief: ["dashboard", "payments", "history", "report", "menu"],
+  chef: ["dashboard", "payments", "history", "report", "menu"],
   user: ["dashboard", "payments", "history", "report"],
 };
 

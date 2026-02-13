@@ -160,7 +160,7 @@ export default function Pyaments({ inventory, setInventory }) {
         <html>
           <head><title>Order #${order.id}</title></head>
           <body style="font-family: monospace; width: 300px; padding: 10px;">
-            <h1 style="text-align:center;">MMK Restaurant</h1>
+            <h1 style="text-align:center;">F&B POS </h1>
             <p>Order ID: ${order.id}</p>
             <p>Date: ${date}</p>
             <table style="width:100%; border-collapse: collapse;">

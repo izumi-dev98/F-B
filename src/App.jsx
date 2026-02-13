@@ -143,7 +143,7 @@ export default function App() {
 
             {/* Protected routes */}
             <Route path="/dashboard" element={<PrivateRoute user={user}><Dashboard /></PrivateRoute>} />
-            <Route path="/payments" element={<PrivateRoute user={user}><Payments inventory={inventory} menu={menu} /></PrivateRoute>} />
+            <Route path="/payments" element={<PrivateRoute user={user}><Payments inventory={inventory} setInventory={setInventory} menu={menu} /></PrivateRoute>} />
             <Route path="/history" element={<PrivateRoute user={user}><History /></PrivateRoute>} />
             <Route path="/menu" element={<PrivateRoute user={user} allowedRoles={['superadmin', 'chief']}><Menu menu={menu} inventory={inventory} addMenuItem={addMenuItem} updateMenuItem={updateMenuItem} deleteMenuItem={deleteMenuItem} /></PrivateRoute>} />
             <Route path="/inventory" element={<PrivateRoute user={user} allowedRoles={['superadmin', 'admin']}><Inventory inventory={inventory} addInventoryItem={addInventoryItem} updateInventoryItem={updateInventoryItem} deleteInventoryItem={deleteInventoryItem} /></PrivateRoute>} />

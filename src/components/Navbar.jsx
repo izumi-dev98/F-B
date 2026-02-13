@@ -45,7 +45,7 @@ export default function Navbar({ toggleSidebar }) {
         </button>
 
         <h1 className="text-base sm:text-lg font-semibold text-gray-800">
-          POS System
+          F&B Myat Taw Win Aye Thar Yar Hospital
         </h1>
       </div>
 

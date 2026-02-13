@@ -133,11 +133,12 @@ export default function History() {
       ) : (
         <>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {paginatedHistory.map((order) => (
-              <div key={order.id} className="bg-white rounded-2xl shadow-lg p-6 flex flex-col justify-between">
+            {paginatedHistory.map((order , index) => (
+              <div key={index} className="bg-white rounded-2xl shadow-lg p-6 flex flex-col justify-between">
                 <div className="mb-4">
                   <div className="flex justify-between items-center mb-2">
-                    <span className="font-semibold text-lg">Order #{order.id}</span>
+                    <span className="text-sm">Order #{index + 1}</span>
+                    <span className=" text-sm">Slip :{order.id}</span>
                     <span className="text-sm text-gray-500">
                       {new Date(order.created_at).toLocaleDateString()}<br/>
                       {new Date(order.created_at).toLocaleTimeString()}

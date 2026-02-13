@@ -109,7 +109,7 @@ export default function Inventory({
           <table className="w-full min-w-[600px] border-collapse">
             <thead className="bg-gray-100 text-gray-700 sticky top-0 z-10">
               <tr>
-                <th className="p-3 text-left">#</th>
+                <th className="p-3 text-left">No</th>
                 <th className="p-3 text-left">Item</th>
                 <th className="p-3 text-center">Qty</th>
                 <th className="p-3 text-left">Type</th>

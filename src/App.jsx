@@ -24,7 +24,7 @@ import Logout from "./pages/Logout";
 const accessRights = {
   superadmin: ["dashboard", "payments", "history", "menu", "inventory", "report"],
   admin: ["dashboard", "history", "inventory", "report"],
-  chef: ["dashboard", "payments", "history", "report", "menu"],
+  chef: ["dashboard",  "history", "report", "menu"],
   user: ["dashboard", "payments", "history", "report"],
 };
 
